@@ -14,6 +14,9 @@ import { ToasterService } from './containers/toaster/toaster.service';
   ],
   providers:[
     ToasterService
+  ],
+  exports:[
+    ToasterComponent
   ]
 })
 export class ToasterModule { }
