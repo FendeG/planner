@@ -1,4 +1,4 @@
-import { SwitchView } from '@angular/common/src/directives/ng_switch';
+// import { SwitchView } from '@angular/common/src/directives/ng_switch';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Observable, of } from 'rxjs';
@@ -8,6 +8,7 @@ import { getISOWeek, format, startOfYear, addDays, isThisWeek, startOfWeek } fro
 import { PlannerService } from 'src/app/services/planner.service';
 
 // const x = of(1, 2, 3, 4);
+
 
 @Component({
   selector: 'app-planner',
