@@ -1,0 +1,108 @@
+ <table class="tableWeek">
+   <thead>
+
+     <tr>
+       <th colspan="100%"> Year : {{ year }} Week : {{ week }} {{ month }}</th>
+     </tr>
+
+
+     <tr>
+       <th *ngIf="weekIndex === 0">-</th>
+
+       <!-- [attr.colspan]="numberOfDayParts" -->
+       <!-- colspan="2"  -->
+       <!-- <th *ngFor="let day of weekDays;let i = index" class="day" [attr.colspan]="numberOfDayParts"> -->
+       <th *ngFor="let day of weekDays;let i = index" class="day"
+         [ngClass]="{'day': true, 'today':day.id === todayId }">
+         {{ day.name}} <br />
+         {{ day.day }}
+       </th>
+     </tr>
+
+     <tr>
+       <th *ngIf="weekIndex === 0">-</th>
+
+       <th *ngFor="let day of weekDays;let i = index" class="day" id="0_{{day.id}}">
+         &nbsp;
+       </th>
+
+     </tr>
+
+   </thead>
+
+   <tbody>
+
+     <tr *ngFor="let user of users;let i = index">
+       <td *ngIf="weekIndex === 0 " [ngClass]="user.id == userId ? 'currentUser' : ''">{{ user.name }}</td>
+       <td *ngFor="let day of weekDays;let i = index" class="day">
+         <div [ngClass]="{'dayWrapper':true,'today': day.date === todayId}">
+           <!-- <table class="tableDay">
+             <tr>
+
+               <td *ngFor="let dayPart of dayParts;let i = index"
+                 (click)="onCellClick(user.id + '_' + day.date + '_' + dayPart )"
+                 id="{{ user.id + '_' + day.date + '_' + dayPart }}" (mouseenter)="mouseEnter($event)">
+                 &nbsp;
+               </td>
+
+             </tr>
+           </table> -->
+
+           <div class="item">
+             <div *ngFor="let dayPart of dayParts;let i = index" class="dayPart"
+               (click)="onCellClick(user.id + '_' + day.date + '_' + dayPart )"
+               id="{{ user.id + '_' + day.date + '_' + dayPart }}" 
+               (mouseenter)="onMouseEnter($event)"
+                (mouseout)="onMouseOut($event)"
+                (mouseover)="onMouseOver($event)"
+                >
+               {{'_'}}
+             </div>
+           </div>
+
+
+         </div>
+
+       </td>
+       <!-- 
+      <td *ngFor="let day of dayParts;let i = index" title="{{dayPart}}" id="{{ user.id + '_' + year + '_' +  week + '_' +  day.id + '_' + day.part }}" class="dayPart"
+        (mouseenter)="mouseEnter($event)" (click)="onCellClick(user.id,year,week,day)" 
+       >
+      </td> -->
+
+     </tr>
+     <!-- 
+    <tr>
+      <td></td>
+
+      <td *ngFor="let day of weekDays;let i = index" [attr.colspan]="numberOfDayParts" class="flexTd">
+
+        <div class="dienstTop">
+        </div>
+
+        <div class="item">
+          <div class="flexDayPart">1</div>
+          <div class="flexDayPart">2</div>
+          <div class="flexDayPart">3</div>
+        </div>
+
+        <div class="dienstBottom">
+        </div>
+
+      </td>
+
+    </tr> -->
+   </tbody>
+
+
+
+ </table>
+
+ <div *ngIf="true">
+   code : {{ code }}
+   <br />
+   <!-- db : {{ db | json }} -->
+  <br />
+
+
+ </div>

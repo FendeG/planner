@@ -1,0 +1,151 @@
+<div class="balk">
+
+  <div>
+    Planner
+  </div>
+
+
+  <div>
+    Datum : {{ todayDate }}
+  </div>
+
+  <div>
+    Department
+  </div>
+
+  <div>
+    user : {{ userId}}
+  </div>
+
+  <div>
+    Role : 
+  </div>
+
+</div>
+
+
+
+
+
+<div class="menuX">
+
+  <form [formGroup]="form">
+
+    <!-- <input type="text" formControlName="aantal"> -->
+    <div class="menu1">
+      <div class="form-group">
+        Weken :
+        <select formControlName="aantal" (change)="onWeeksChange($event.target.value)">
+
+          <option [value]="1">1</option>
+          <option [value]="2">2</option>
+          <option [value]="3">3</option>
+          <option [value]="4">4</option>
+          <option [value]="5">5</option>
+          <option [value]="6">6</option>
+          <option [value]="7">7</option>
+          <option [value]="8">8</option>
+          <!-- <option *ngFor="let number of nrOfWeeks;let i = index" [value]="number">
+          {{number}}
+        </option> -->
+        </select>
+      </div>
+
+      <div class="form-group">
+        code :
+        <select formControlName="code">
+          <option [value]="'a'">a : Afwezig</option>
+          <option [value]="2">2 : optie 2</option>
+          <option [value]="3">3</option>
+          <option [value]="4">4</option>
+          <option [value]="'F'">F</option>
+          <option [value]="6">6</option>
+          <!-- <option *ngFor="let number of nrOfWeeks;let i = index" [value]="number">
+          {{number}}
+        </option> -->
+        </select>
+      </div>
+
+      <div class="form-group">
+        Color :
+        <select formControlName="color">
+
+          <option [value]="'red'" style="background-color: red;">Red</option>
+          <option [value]="'orange'" style="background-color: orange;">Orange</option>
+          <option [value]="'orangered'" style="background-color: orangered;">Orange Red</option>
+          <option [value]="'yellow'" style="background-color: yellow;">Yellow</option>
+          <option [value]="'blue'" style="background-color: blue;">blue</option>
+          <option [value]="'green'" style="background-color: green;">green</option>
+          <option [value]="'purple'" style="background-color: purple;">purple</option>
+          <option [value]="'cyan'" style="background-color: cyan;">cyan</option>
+          <!-- <option *ngFor="let number of nrOfWeeks;let i = index" [value]="number">
+          {{number}}
+        </option> -->
+        </select>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<div class="menu">
+  <div>
+    <button type="button" (click)="onWeek(-4)">
+      &lt; &lt; &lt; &lt;
+    </button>
+  </div>
+
+
+  <div>
+    <button type="button" (click)="onWeek(-1)">
+      &lt;
+    </button>
+  </div>
+
+  <div>
+    <button type="button" (click)="onWeek(0)">
+      Today
+    </button>
+  </div>
+
+
+  <div>
+    <button type="button" (click)="onWeek(1)">
+      &gt;
+    </button>
+  </div>
+
+  <div>
+    <button type="button" (click)="onWeek(4)">
+      &gt; &gt; &gt; &gt;
+    </button>
+  </div>
+</div>
+
+<div class="weeks">
+
+
+  <div *ngFor="let fm of firstMondays;let i = index">
+    <app-week [weekIndex]="i" [todayId]="todayId" [userId]="1" [firstDayOfWeek]="fm" [code]="form.getRawValue().code"
+      [color]="form.getRawValue().color">
+
+    </app-week>
+  </div>
+</div>
+
+<div>
+  firstMondays : {{ firstMondays | json }}
+  <br />
+  <div>
+    firstMondays : {{ firstMondays[0]  }}
+    <br />
+
+    form : {{ form.getRawValue() | json }}
+    <br />
+  
+    this.form.getRawValue() : {{ this.form.getRawValue() | json  }}
+    <br />
+
+    nrOfWeeks : {{ nrOfWeeks | json }}
+  
+  </div>

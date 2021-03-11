@@ -1,0 +1,39 @@
+.host{
+    margin:0;
+}
+
+.balk{
+    display: flex;
+    width:100%;
+    background-color: blanchedalmond;
+    align-items: center;
+    justify-content:space-around;
+    height: 60px;
+    margin:0;
+    padding:0;
+}
+
+.tableWeek{
+    border: 1px solid black;
+}
+
+.weeks{
+    display: flex;
+    align-items: center;
+    justify-content:center;
+ 
+}
+
+.menu{
+    display: flex;
+    align-items: center;
+    justify-content:center;
+ 
+}
+
+.menu1{
+    display: flex;
+    align-items: center;
+    justify-content:space-around;
+ 
+}

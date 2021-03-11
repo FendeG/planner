@@ -1,0 +1,112 @@
+.tableWeek {
+  margin: 0px;
+  border: 1px solid black;
+
+  padding: 3px;
+  background-color: lightslategray;
+}
+
+.tableWeek tr td {
+  border: 1px solid rgb(204, 204, 204);
+  background-color: var(--clr-primary);
+  padding: 1px;
+  margin: 1px;
+}
+
+
+.tableDay {
+  background-color: mediumorchid;
+  border: 0px;
+}
+
+.tableDay tr td {
+  border: 0px;
+  background-color: yellow;
+  margin: 2px;
+  padding: 2px;
+  cursor: pointer;
+}
+
+
+
+.day {
+  background-color: burlywood;
+  // width: 4ch;
+}
+
+.dayPart {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  width: 1ch;
+  border: 1px solid black;
+  background-color: whitesmoke;
+  padding: 2px;
+  margin: 0px 0px 0px 0px;
+  border: 1px solid whitesmoke;
+
+
+}
+
+.dayPart:hover {
+  cursor: pointer;
+}
+
+.selected{
+  // background-color: crimson;
+  border: 1px solid black;
+}
+.currentUser {
+  font-weight: bold;
+  background-color: chocolate;
+}
+
+.item {
+  display: flex;
+  justify-content: space-around;
+  align-items: top;
+}
+
+// .flexDayPart {
+//   // border: 1px solid black;
+//   background-color: whitesmoke;
+//   // padding: 2px;
+//   // margin: 0px 0px 0px 0px;
+// }
+
+.flexTd {
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+}
+
+.dienstTop {
+  display: flex;
+  height: 3px;
+  background-color: yellowgreen;
+  border: 0px;
+  margin-bottom: 2px;
+}
+
+.dienstBottom {
+  display: flex;
+  height: 3px;
+  background-color: yellowgreen;
+  border: 0px;
+  margin-top: 2px;
+}
+
+.idCurrent {
+  // background-color: red;
+  border: 1px solid black;
+
+}
+
+.today {
+  background-color: red !important;
+}
+
+.dayWrapper {
+  margin: 1px;
+  padding: 1px;
+  ;
+}

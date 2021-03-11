@@ -1,0 +1,23 @@
+{
+    "users":[
+        {
+            "userId":1,
+            "name":"Frank"
+        },
+        {
+            "userId":2,
+            "name":"Peter"
+        }
+    ],
+    "1":[
+        {
+            "date":"",
+            "week":4,
+            "year":2021,
+            "day":1,
+            "part":1,
+            "code":"F",
+            "color":"yellow"
+        }
+    ]
+}

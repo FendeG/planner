@@ -1,0 +1,5 @@
+<div id="simpleToast" [ngClass]="{ 'show' : true}">
+  <div class="messages" *ngFor="let message of messages" (click)="removeAlert(message)" class="{{cssClass(message)}}">
+    <div> {{iconType(message.type) }} {{ message.message }} </div>
+  </div>
+</div>
