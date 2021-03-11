@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { getISOWeek, format, startOfYear, addDays, isThisWeek, startOfWeek } from 'date-fns'
 
 
-import { PlannerService } from 'src/app/services/planner.service';
+// import { PlannerService } from 'src/app/services/planner.service';
 
 // const x = of(1, 2, 3, 4);
 
@@ -27,7 +27,7 @@ export class PlannerComponent implements OnInit, OnDestroy {
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _plannerService: PlannerService
+    // private _plannerService: PlannerService
 
   ) {
 

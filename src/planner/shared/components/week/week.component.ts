@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Renderer2, AfterContentChecked } from '@angular/core';
 
-import { WeekService } from './week.service';
+import { WeekService } from '../../services/week.service';
 import { getWeek } from 'date-fns';
 import { getISOWeek, getISODay, getDay, subDays } from 'date-fns'
 import { startOfWeek, startOfYear, format } from 'date-fns'
 import { addDays } from 'date-fns'
 import { Holidays, HolidaysService } from '../../services/holidays.service';
-import { ToasterService } from '../toaster/toaster.service';
+import { ToasterService } from '../../../../toaster/containers/toaster/toaster.service';
 
 export interface WeekDays {
   year: number;
