@@ -21,7 +21,7 @@ import { AuthService} from './services/auth/auth.service';
   
 export class SharedModule {
   // Prevent duplicated 
-  static forRoot(): ModuleWithProviders{
+  static forRoot(): ModuleWithProviders<SharedModule>{
     return {
       ngModule: SharedModule,
       providers: [
