@@ -10,8 +10,10 @@ import {PlannerComponent} from './containers/planner/planner.component';
 import {HolidaysService} from './shared/services/holidays.service';
 import {WeekService} from './shared/services/week.service';
 
+import {AuthGuard} from '../auth/shared/guards/auth.guards';
+
 export const ROUTES: Routes = [
-  { path: 'planner' ,component:PlannerComponent}
+  { path: 'planner' ,component:PlannerComponent,canActivate:[AuthGuard]}
 ]
 
 @NgModule({

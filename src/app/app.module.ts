@@ -16,11 +16,13 @@ import { FormsModule } from '@angular/forms';
 import { AuthModule } from '../auth/auth.module';
 import { ToasterModule } from '../toaster/toaster.module';
 import { PlannerModule } from '../planner/planner.module';
+import { HeaderComponent } from './components/header/header.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
