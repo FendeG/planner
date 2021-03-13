@@ -11,7 +11,7 @@ import {HolidaysService} from './shared/services/holidays.service';
 import {WeekService} from './shared/services/week.service';
 
 export const ROUTES: Routes = [
-  { path: '' ,component:PlannerComponent}
+  { path: 'planner' ,component:PlannerComponent}
 ]
 
 @NgModule({

@@ -40,7 +40,10 @@ export class WeekService {
     return this._http.get<Users[]>(api_users)
   }
 
-  
+  save(item){
+    console.log('save',item);
+  }
+
 
   //
   //     userId : date : dagdeel : code : color

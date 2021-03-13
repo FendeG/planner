@@ -1,3 +1,4 @@
+import { Store } from '../store';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -13,8 +14,8 @@ import { FormsModule } from '@angular/forms';
 
 
 import { AuthModule } from '../auth/auth.module';
-import { PlannerModule } from '../planner/planner.module';
 import { ToasterModule } from '../toaster/toaster.module';
+import { PlannerModule } from '../planner/planner.module';
 
 
 @NgModule({
@@ -27,13 +28,14 @@ import { ToasterModule } from '../toaster/toaster.module';
     HttpClientModule,
     ReactiveFormsModule,
     AuthModule,
-    PlannerModule,
-    ToasterModule
+    ToasterModule,
+    PlannerModule
   ],
   exports: [
   ],
   providers: [
     LoaderService,
+    Store
   ],
   bootstrap: [AppComponent]
 })

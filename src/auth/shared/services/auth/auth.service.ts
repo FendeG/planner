@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 import { Store } from '../../../../store';
 
@@ -19,13 +19,13 @@ export interface User {
 })
 export class AuthService {
 
-  // auth$ = this.af.authState.pipe(
-  //   switchMap(next => {
-  //     if(!next){
-  //       this.store.set('user',null)
-  //     }
+  auth$ = this.af.authState.pipe(
+    tap(next => {
+      if(!next){
+        this.store.set('user',null)
+      }
 
-  // }));
+  }));
 
   constructor(
     private store: Store,

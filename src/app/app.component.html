@@ -2,9 +2,12 @@
 <h1>
     Planner
 </h1>
-<h1>
+
+<div *ngFor="let todo of todos$ | async">
+    {{ todo.name}}
+
+</div>
     <div class="wrapper">
 
         <router-outlet></router-outlet>
     </div>
-</h1>

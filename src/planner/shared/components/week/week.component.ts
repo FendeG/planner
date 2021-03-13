@@ -214,6 +214,9 @@ export class WeekComponent implements OnInit, AfterViewInit {
     if (this.code) {
       console.log('update code', this.code);
       document.getElementById(key).textContent = this.code;
+      this._weekService.save({
+        code:this.code
+      });
 
     }
 
