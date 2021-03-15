@@ -1,3 +1,5 @@
+weekData : {{ weekData$ | async | json }}
+
  <table class="tableWeek">
    <thead>
 
@@ -18,6 +20,7 @@
          {{ day.day }}
        </th>
      </tr>
+
 
      <tr>
        <th *ngIf="weekIndex === 0">-</th>

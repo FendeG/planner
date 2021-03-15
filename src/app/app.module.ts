@@ -18,6 +18,7 @@ import { ToasterModule } from '../toaster/toaster.module';
 import { PlannerModule } from '../planner/planner.module';
 import { HeaderComponent } from './components/header/header.component';
 
+import {TodosModule} from '../todos/todos.module';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { HeaderComponent } from './components/header/header.component';
     ReactiveFormsModule,
     AuthModule,
     ToasterModule,
-    PlannerModule
+    PlannerModule,
+    TodosModule
   ],
   exports: [
   ],

@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import {TodosModule} from '../todos/todos.module';
+
 
 // { path: '**', component: PlannerComponent, },
 const routes: Routes = [
-  {path:'',pathMatch:'full',redirectTo:'planner'} // default route
+  {path:'',pathMatch:'full',redirectTo:'planner'}, // default route
+  {path:'todos',loadChildren:'../todos/todos.module#TodosModule'}
+
 
 ];
 

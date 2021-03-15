@@ -1,12 +1,19 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Renderer2, AfterContentChecked } from '@angular/core';
+import { AngularFireDatabaseModule } from '@Angular/fire/database';
+import { Observable, Subscription } from 'rxjs';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Renderer2, AfterContentChecked, OnDestroy } from '@angular/core';
 
 import { WeekService } from '../../services/week.service';
-import { getWeek } from 'date-fns';
+import { getWeek, isThisSecond } from 'date-fns';
 import { getISOWeek, getISODay, getDay, subDays } from 'date-fns'
 import { startOfWeek, startOfYear, format } from 'date-fns'
 import { addDays } from 'date-fns'
 import { Holidays, HolidaysService } from '../../services/holidays.service';
 import { ToasterService } from '../../../../toaster/containers/toaster/toaster.service';
+import {Store} from '../../../../store';
+
+import {AuthService} from '../../../../auth/shared/services/auth/auth.service';
+
+import {AngularFireDatabase} from '@Angular/fire/database';
 
 export interface WeekDays {
   year: number;
@@ -39,7 +46,10 @@ export interface Users {
   styleUrls: ['./week.component.scss']
 })
 
-export class WeekComponent implements OnInit, AfterViewInit {
+export class WeekComponent implements OnInit, AfterViewInit ,OnDestroy{
+  
+  
+  
   @Input('weekIndex') weekIndex: number;
   @Input('todayId') todayId: string;
   @Input('userId') userId: number;
@@ -48,6 +58,7 @@ export class WeekComponent implements OnInit, AfterViewInit {
   @Input('color') color: string;
 
 
+  
   currentCell: any;
   startOfYear: Date;
 
@@ -75,16 +86,24 @@ export class WeekComponent implements OnInit, AfterViewInit {
   userDateTimeFormat: string = 'dd-MM-yyyy HH:mm';
   userDateFormat: string = 'dd-MM-yyyy';
 
+  weekData$ : Observable<any>;
+  subscription:Subscription;
+
   constructor(
     private _weekService: WeekService,
     private elementRef: ElementRef, private renderer: Renderer2,
     private holidaysService: HolidaysService,
-    private _toasterService: ToasterService
+    private _toasterService: ToasterService,
+    private store:Store,
+    private authService:AuthService,
+    private af:AngularFireDatabase
   ) {
 
   }
 
   ngOnInit() {
+    // this.weekData$ = this.af.list(`fdh`);
+
     console.log('ngOnInit weekcomponent....................................................................')
     this.users.push(
       { id: 1, name: 'Frank1', ill: false, birthday: '20210307', department: 'test' }
@@ -153,7 +172,8 @@ export class WeekComponent implements OnInit, AfterViewInit {
     ];
 
 
-
+   
+    
     this._weekService.getWeekPlanning(1).subscribe(data => {
       // console.log('Users : ', data);
     });
@@ -161,7 +181,13 @@ export class WeekComponent implements OnInit, AfterViewInit {
     // this.holidays = this.holidaysService.getHolidayForWeek(this.weekNumber, this.year);
     // console.log('holidays', this.holidays);
 
+    // this.weekData$ = this.store.select<any>('fdh');
+    // this.subscription = this._weekService.plannerData$.subscribe();
 
+  }
+
+  get uid(){
+    return this.authService.user;
   }
 
 
@@ -412,7 +438,9 @@ export class WeekComponent implements OnInit, AfterViewInit {
   }
 
 
-
+ngOnDestroy(){
+ // this.subscription.unsubscribe()
+}
 
 
 }

@@ -7,6 +7,14 @@
     {{ user$ | async | json }}
 </h1>
 
+<a [routerLink]="['/todos']">
+  Todos
+</a>
+
+<a routerLink="todos">
+  Todos
+</a>
+
 <app-header 
 [user]="user$ | async"
 (logout)="onLogout()"
