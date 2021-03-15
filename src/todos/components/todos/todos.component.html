@@ -1,1 +1,18 @@
 <p>todos works!</p>
+<input type="text" [(ngModel)]="todo" >
+<button type="button" class="btn green" (click)="onAdd()"
+
+>Add</button>
+<hr/>
+<h1>Todo's</h1>
+<div *ngFor="let todo of todosRef$ | async" class="todos todo">
+    <div>
+        {{ todo.todo}}
+
+    </div>
+    <div>
+        <button type="button" (click)="onEdit()" class="btn blue">Edit</button>
+        <button type="button" (click)="onDelete()" class="btn red">Delete</button>
+
+    </div>
+</div>

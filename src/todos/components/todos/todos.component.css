@@ -1,0 +1,38 @@
+.btn {
+  background-color: grey;
+  color: white;
+}
+
+.btn.green {
+  background-color: green;
+  color: white
+}
+
+.btn.red {
+  background-color: red;
+  color: white
+}
+
+.btn.blue {
+  background-color: blue;
+  color: white
+}
+
+
+
+
+
+.todos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1px;
+  padding-left: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+
+}
+
+.todo{
+    background-color: whitesmoke;
+}
