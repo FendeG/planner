@@ -44,7 +44,9 @@ export const firebaseConfig: FirebaseAppConfig = {
     SharedModule.forRoot(),     // prevent duplicated entrys
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+   // AngularFireStorageModule,
+   // AngularFireDatabaseModule
 
   ]
 })

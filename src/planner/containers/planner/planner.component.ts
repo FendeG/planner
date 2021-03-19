@@ -39,7 +39,7 @@ export class PlannerComponent implements OnInit, OnDestroy {
     this.todayDate =  format(new Date(), 'dd--MM-yyyy');
 
 
-    this.nrOfWeeks = 4;
+    this.nrOfWeeks = 2;
 
     this.form = this._formBuilder.group({
       aantal: [{ value: '4', disabled: false }, Validators.required],

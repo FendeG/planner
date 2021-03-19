@@ -9,11 +9,11 @@ import { startOfWeek, startOfYear, format } from 'date-fns'
 import { addDays } from 'date-fns'
 import { Holidays, HolidaysService } from '../../services/holidays.service';
 import { ToasterService } from '../../../../toaster/containers/toaster/toaster.service';
-import {Store} from '../../../../store';
+import { Store } from '../../../../store';
 
-import {AuthService} from '../../../../auth/shared/services/auth/auth.service';
+import { AuthService, User } from '../../../../auth/shared/services/auth/auth.service';
 
-import {AngularFireDatabase} from '@Angular/fire/database';
+import { AngularFireDatabase } from '@Angular/fire/database';
 
 export interface WeekDays {
   year: number;
@@ -46,10 +46,10 @@ export interface Users {
   styleUrls: ['./week.component.scss']
 })
 
-export class WeekComponent implements OnInit, AfterViewInit ,OnDestroy{
-  
-  
-  
+export class WeekComponent implements OnInit, AfterViewInit, OnDestroy {
+
+
+
   @Input('weekIndex') weekIndex: number;
   @Input('todayId') todayId: string;
   @Input('userId') userId: number;
@@ -58,7 +58,7 @@ export class WeekComponent implements OnInit, AfterViewInit ,OnDestroy{
   @Input('color') color: string;
 
 
-  
+
   currentCell: any;
   startOfYear: Date;
 
@@ -86,22 +86,40 @@ export class WeekComponent implements OnInit, AfterViewInit ,OnDestroy{
   userDateTimeFormat: string = 'dd-MM-yyyy HH:mm';
   userDateFormat: string = 'dd-MM-yyyy';
 
-  weekData$ : Observable<any>;
-  subscription:Subscription;
+  weekData$: Observable<any>;
+  subscription: Subscription;
+  subscriptionUser: Subscription;
+
+  user$: Observable<User>;
+
+  users$: Observable<any[]>;
+
+  uid: string;
 
   constructor(
     private _weekService: WeekService,
     private elementRef: ElementRef, private renderer: Renderer2,
     private holidaysService: HolidaysService,
     private _toasterService: ToasterService,
-    private store:Store,
-    private authService:AuthService,
-    private af:AngularFireDatabase
+    private store: Store,
+    private authService: AuthService,
+    private af: AngularFireDatabase
   ) {
 
   }
 
   ngOnInit() {
+
+    this.subscription = this.authService.auth$.subscribe();   // kick of or start
+    this.user$ = this.store.select<User>('user');
+    this.subscriptionUser = this.store.select<User>('user').subscribe(data => {
+      this.uid = data.uid
+    });
+
+    this.user$.subscribe(data => {
+      this.uid = data.uid
+    })
+
     // this.weekData$ = this.af.list(`fdh`);
 
     console.log('ngOnInit weekcomponent....................................................................')
@@ -118,6 +136,8 @@ export class WeekComponent implements OnInit, AfterViewInit ,OnDestroy{
     );
 
 
+    this.users$ = this._weekService.getUsers('IT');
+    
     // this.weekNumber = this.week;
 
     this.year = this.firstDayOfWeek.getFullYear();
@@ -137,7 +157,12 @@ export class WeekComponent implements OnInit, AfterViewInit ,OnDestroy{
 
     this.query = ` between ${format(this.firstDayOfWeek, 'yyyyMMdd')} and ${format(addDays(this.firstDayOfWeek, 6), 'yyyyMMdd')}`;
     console.log(this.query);
-
+    this._weekService.getWeekPlanning(this.week).subscribe(data => {
+      console.log('getWeekPlanning', data);
+      data.map(record =>{
+        console.log(record.payload.doc.id,record.payload.doc.data());
+      })
+    })
     //
     // weekdays
     //
@@ -172,11 +197,11 @@ export class WeekComponent implements OnInit, AfterViewInit ,OnDestroy{
     ];
 
 
-   
-    
-    this._weekService.getWeekPlanning(1).subscribe(data => {
-      // console.log('Users : ', data);
-    });
+    // console.log('getWeekPlanning',this._weekService.getWeekPlanning(this.firstDayOfWeek));
+
+    // this._weekService.getWeekPlanning(this.firstDayOfWeek).subscribe(data => {
+    //   // console.log('Users : ', data);
+    // });
 
     // this.holidays = this.holidaysService.getHolidayForWeek(this.weekNumber, this.year);
     // console.log('holidays', this.holidays);
@@ -186,9 +211,9 @@ export class WeekComponent implements OnInit, AfterViewInit ,OnDestroy{
 
   }
 
-  get uid(){
-    return this.authService.user;
-  }
+  // get uid(){
+  //   return this.authService.user;
+  // }
 
 
 
@@ -229,19 +254,43 @@ export class WeekComponent implements OnInit, AfterViewInit ,OnDestroy{
     console.log('mouseover');
   }
 
+  onKeyGet(key, index) {
+    return key.split('_')[index];
+  }
 
   onCellClick(id) {
     if (!this.code && !this.color) {
       this._toasterService.warning('Choose code or color');
       return
     }
+    if (!this.authService.authState) {
+      this._toasterService.error('Not logged in ');
+      return
+    }
+    
+    // const currentColor = document.getElementById(key).style.backgroundColor  ;
+    // const currentCode = document.getElementById(key).textContent;
+    // if (!currentCode && !currentColor){
+    //   console.log('Insert');
+    // } else{
+    //   console.log('Update');
+    // }
+
     var key = `${id}`;
-    console.log('onCellClick', key);
+
+
+//     element.getAttribute('key'); // Getter
+// element.setAttribute('key', 'value'); // Setter
+
+    console.log('data-db',document.getElementById(key).getAttribute('data-db'))
+    console.log('onCellClick', key, this.onKeyGet(key, 1));
     if (this.code) {
       console.log('update code', this.code);
       document.getElementById(key).textContent = this.code;
-      this._weekService.save({
-        code:this.code
+      this._weekService.save(this.onKeyGet(key, 1), this.uid, {
+        code: this.code,
+        year: this.year,
+        week: this.week,
       });
 
     }
@@ -341,13 +390,13 @@ export class WeekComponent implements OnInit, AfterViewInit ,OnDestroy{
   }
 
   onMouseOut(e) {
-    console.log("onMouseOut : ", e);
+    //console.log("onMouseOut : ", e);
     e.target.classList.remove('selected');
 
   }
 
   onMouseOver(e) {
-    console.log("onMouseOver : ", e);
+    //console.log("onMouseOver : ", e);
     e.target.classList.add('selected');
   }
 
@@ -438,9 +487,10 @@ export class WeekComponent implements OnInit, AfterViewInit ,OnDestroy{
   }
 
 
-ngOnDestroy(){
- // this.subscription.unsubscribe()
-}
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+    this.subscriptionUser.unsubscribe();
+  }
 
 
 }

@@ -1,18 +1,20 @@
 <p>todos works!</p>
 <input type="text" [(ngModel)]="todo" >
-<button type="button" class="btn green" (click)="onAdd()"
-
->Add</button>
+<button type="button" class="btn green" (click)="onAdd()">Save</button>
+<button type="button" class="btn gray" (click)="onReset()">Cancel</button>
 <hr/>
 <h1>Todo's</h1>
 <div *ngFor="let todo of todosRef$ | async" class="todos todo">
     <div>
-        {{ todo.todo}}
-
+       <!-- *** {{ todo.todo}} ***<br/> -->
+        {{ todo.payload.doc.id }} <br/>
+        <!-- {{ todo | json }} <br/> -->
+        <!-- {{ todo.payload.doc.data() | json   }} <br/> -->
+        {{ todo.payload.doc.data().todo   }} 
     </div>
     <div>
-        <button type="button" (click)="onEdit()" class="btn blue">Edit</button>
-        <button type="button" (click)="onDelete()" class="btn red">Delete</button>
+        <button type="button" (click)="onEdit(todo.payload.doc.id,todo.payload.doc.data() )" class="btn blue">Edit</button>
+        <button type="button" (click)="onDelete(todo)" class="btn red">Delete</button>
 
     </div>
 </div>

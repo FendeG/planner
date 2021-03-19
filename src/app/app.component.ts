@@ -20,7 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store,
-    private router:Router,
+    private router: Router,
     private authService: AuthService
   ) {
     this.store.set('todos', [{ id: 1, name: 'test' }, { id: 2, name: 'test2' }]);
@@ -29,18 +29,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscription = this.authService.auth$.subscribe();   // kick of or start
-    this.user$ = this.store.select<User>('user');
-
+    this.user$ = this.store.select<User>('user')
+   
 
   }
 
-  async onLogout(){
+  async onLogout() {
     console.log('logout');
     await this.authService.logoutUser();
     this.router.navigate(['/auth/login']);
   }
 
-  
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
 

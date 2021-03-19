@@ -3,11 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { startOfWeek, startOfYear, format } from 'date-fns'
 
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore ,CollectionReference} from '@angular/fire/firestore';
 // import { AngularFireDatabase ,AngularFireList} from '@Angular/fire/database';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { Store } from '../../../store';
+import { AuthService } from '../../../auth/shared/services/auth/auth.service';
+import { registerLocaleData } from '@angular/common';
 
 export interface Users {
   userId: number;
@@ -20,6 +22,15 @@ export interface Planning {
   day: number;
   part: number;
   planning: string;
+  color: string;
+}
+
+export interface WeekDay {
+  userId: string;
+  day: number;
+  year:number;
+  part: number;
+  code: string;
   color: string;
 }
 
@@ -52,7 +63,9 @@ export class WeekService {
   constructor(
     private _http: HttpClient,
     private db: AngularFirestore,
-    private store: Store
+    private store: Store,
+    private authService: AuthService,
+    // private collectionReference:CollectionReference
   ) {
     this.dateToday = new Date()
     this.dateToday_yyyyMMdd = format(new Date(), 'yyyy-MM-dd');
@@ -63,8 +76,8 @@ export class WeekService {
     //
     // this.plannerData$ = this.db.list('fdh');
     this.tutorialsRef = this.db.collection('planner').valueChanges();
-    
-    
+
+
     // .pipe(
     //   tap(
     //     next => this.store.set('fdh', next)
@@ -73,14 +86,34 @@ export class WeekService {
 
   }
 
+  get uid() {
+    
+    return this.store.select('user').pipe(map(data => {
+      console.log(data)
+    }));
 
-  getWeekPlanning(weekNr: number): Observable<Users[]> {
-    return this._http.get<Users[]>(api_users)
   }
 
-  save(item) {
+  getUsers(department:string):Observable<any[]>{
+    return this.db.collection('users', ref => ref.where("department", "==", department)).snapshotChanges();
+
+  }
+
+  getWeekPlanning(week:number):Observable<any[]>{
+   
+    return this.db.collection('planner', ref => ref.where("week", "==", week)).snapshotChanges();
+    // this.collectionReference.where("week", "==", 13)
+
+    // return this._http.get<Users[]>(api_users)
+  }
+
+
+  save(date,uid,item) {
+    // this.store.
     console.log('save', item);
-    this.db.collection("planner").add(item);
+
+    // this.db.collection(`planner/${date}/${uid}`).add(item);
+    this.db.collection(`planner`).add({...item,uid:uid,date:date,created:new Date()});
   }
 
 

@@ -6,7 +6,8 @@ import {TodosModule} from '../todos/todos.module';
 // { path: '**', component: PlannerComponent, },
 const routes: Routes = [
   {path:'',pathMatch:'full',redirectTo:'planner'}, // default route
-  {path:'todos',loadChildren:'../todos/todos.module#TodosModule'}
+  {path:'todos',loadChildren:'../todos/todos.module#TodosModule'},
+  {path:'test',loadChildren:'../test-firestore/test-firestore.module#TestFirestoreModule'}
 
 
 ];

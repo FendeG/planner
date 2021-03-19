@@ -19,6 +19,7 @@ import { PlannerModule } from '../planner/planner.module';
 import { HeaderComponent } from './components/header/header.component';
 
 import {TodosModule} from '../todos/todos.module';
+import {TestFirestoreModule} from '../test-firestore/test-firestore.module';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {TodosModule} from '../todos/todos.module';
     AuthModule,
     ToasterModule,
     PlannerModule,
-    TodosModule
+    TodosModule,
+    TestFirestoreModule
   ],
   exports: [
   ],
