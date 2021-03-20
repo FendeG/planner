@@ -1,31 +1,31 @@
 <app-toaster></app-toaster>
-<h1>
-  
-  <a routerLink="planner">
-    Planner
+<div>
+  {{ user$ | async | json }}
+</div>
+
+<div class="bar">
+  <div>
+      <a routerLink="planner">
+        Planner
+      </a>
+  </div>
+
+
+
+  <a [routerLink]="['/todos']">
+    Todos
   </a>
-</h1>
 
-<h1>
-    {{ user$ | async | json }}
-</h1>
+  <a routerLink="todos">
+    Todos
+  </a>
 
-<a [routerLink]="['/todos']">
-  Todos
-</a>
-
-<a routerLink="todos">
-  Todos
-</a>
-
-<a routerLink="test">
-  Test
-</a>
-
-<app-header 
-[user]="user$ | async"
-(logout)="onLogout()"
-></app-header>
+  <a routerLink="test">
+    Test
+  </a>
+</div>
+<br/>
+<app-header [user]="user$ | async" (logout)="onLogout()"></app-header>
 <!-- <div *ngFor="let todo of todos$ | async">
   {{ todo.name}}
 </div> -->

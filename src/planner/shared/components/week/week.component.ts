@@ -2,7 +2,7 @@ import { AngularFireDatabaseModule } from '@Angular/fire/database';
 import { Observable, Subscription } from 'rxjs';
 import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Renderer2, AfterContentChecked, OnDestroy } from '@angular/core';
 
-import { WeekService } from '../../services/week.service';
+import { WeekService, Day } from '../../services/week.service';
 import { getWeek, isThisSecond } from 'date-fns';
 import { getISOWeek, getISODay, getDay, subDays } from 'date-fns'
 import { startOfWeek, startOfYear, format } from 'date-fns'
@@ -15,6 +15,12 @@ import { AuthService, User } from '../../../../auth/shared/services/auth/auth.se
 
 import { AngularFireDatabase } from '@Angular/fire/database';
 
+export interface keyValues {
+  uid: string;
+  date: string;
+  part: string;
+}
+
 export interface WeekDays {
   year: number;
   day: string;
@@ -24,6 +30,7 @@ export interface WeekDays {
   date: string;
   id: string;
 }
+
 
 
 // export interface DayParts{
@@ -96,6 +103,8 @@ export class WeekComponent implements OnInit, AfterViewInit, OnDestroy {
 
   uid: string;
 
+ 
+
   constructor(
     private _weekService: WeekService,
     private elementRef: ElementRef, private renderer: Renderer2,
@@ -123,21 +132,21 @@ export class WeekComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.weekData$ = this.af.list(`fdh`);
 
     console.log('ngOnInit weekcomponent....................................................................')
-    this.users.push(
-      { id: 1, name: 'Frank1', ill: false, birthday: '20210307', department: 'test' }
-    );
+    // this.users.push(
+    //   { id: 1, name: 'Frank1', ill: false, birthday: '20210307', department: 'test' }
+    // );
 
-    this.users.push(
-      { id: 2, name: 'Frank2', ill: false, birthday: '20210307', department: 'test' }
-    );
+    // this.users.push(
+    //   { id: 2, name: 'Frank2', ill: false, birthday: '20210307', department: 'test' }
+    // );
 
-    this.users.push(
-      { id: 3, name: 'Frank3', ill: false, birthday: '20210307', department: 'test' }
-    );
+    // this.users.push(
+    //   { id: 3, name: 'Frank3', ill: false, birthday: '20210307', department: 'test' }
+    // );
 
 
     this.users$ = this._weekService.getUsers('IT');
-    
+
     // this.weekNumber = this.week;
 
     this.year = this.firstDayOfWeek.getFullYear();
@@ -157,12 +166,7 @@ export class WeekComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.query = ` between ${format(this.firstDayOfWeek, 'yyyyMMdd')} and ${format(addDays(this.firstDayOfWeek, 6), 'yyyyMMdd')}`;
     console.log(this.query);
-    this._weekService.getWeekPlanning(this.week).subscribe(data => {
-      console.log('getWeekPlanning', data);
-      data.map(record =>{
-        console.log(record.payload.doc.id,record.payload.doc.data());
-      })
-    })
+  
     //
     // weekdays
     //
@@ -258,6 +262,21 @@ export class WeekComponent implements OnInit, AfterViewInit, OnDestroy {
     return key.split('_')[index];
   }
 
+  //
+  //
+  //
+  onKeyValues(key): keyValues {
+    const values = key.split('_');
+    return {
+      uid: values[0],
+      date: values[1],
+      part: values[2]
+    }
+  }
+
+  //
+  // Click on Cell
+  //
   onCellClick(id) {
     if (!this.code && !this.color) {
       this._toasterService.warning('Choose code or color');
@@ -267,7 +286,12 @@ export class WeekComponent implements OnInit, AfterViewInit, OnDestroy {
       this._toasterService.error('Not logged in ');
       return
     }
-    
+
+    const keyValue = this.onKeyValues(id);
+    console.log('KeyValues', id, keyValue);
+    return
+
+
     // const currentColor = document.getElementById(key).style.backgroundColor  ;
     // const currentCode = document.getElementById(key).textContent;
     // if (!currentCode && !currentColor){
@@ -279,19 +303,51 @@ export class WeekComponent implements OnInit, AfterViewInit, OnDestroy {
     var key = `${id}`;
 
 
-//     element.getAttribute('key'); // Getter
-// element.setAttribute('key', 'value'); // Setter
+    //     element.getAttribute('key'); // Getter
+    // element.setAttribute('key', 'value'); // Setter
 
-    console.log('data-db',document.getElementById(key).getAttribute('data-db'))
+    
+    console.log('data-db', document.getElementById(key).getAttribute('data-db'))
+    if (document.getElementById(key).getAttribute('data-db')) {
+      console.log('Update key ',document.getElementById(key).getAttribute('data-db'));
+
+      
+    } else {
+      console.log('Insert');
+      // this.day = {year:this.year}
+      // const newDay = new Day();
+      this._weekService.insert({
+        week:this.week,
+        date:keyValue.date,
+        part:keyValue.part,
+        uid:keyValue.uid,
+        code:this.code,
+        color:this.color,
+        year:this.year
+      })
+     
+    }
+
+    if (this.code) {
+      // this.day.code = this.code;
+
+    }
+
+    if (this.color) {
+      // this.day.color = this.color
+    }
+
+
     console.log('onCellClick', key, this.onKeyGet(key, 1));
+    return
     if (this.code) {
       console.log('update code', this.code);
       document.getElementById(key).textContent = this.code;
-      this._weekService.save(this.onKeyGet(key, 1), this.uid, {
-        code: this.code,
-        year: this.year,
-        week: this.week,
-      });
+      // this._weekService.insert(this.onKeyGet(key, 1), this.uid, {
+      //   code: this.code,
+      //   year: this.year,
+      //   week: this.week,
+      // });
 
     }
 
@@ -484,6 +540,27 @@ export class WeekComponent implements OnInit, AfterViewInit, OnDestroy {
     }, 1000)
 
     console.log('week hol', this.holidaysService.hol);
+
+    this._weekService.getWeekPlanning(this.week).subscribe(data => {
+      console.log('getWeekPlanning', data);
+      data.map(record => {
+        
+        const data = record.payload.doc.data();
+        const key = `${data.uid}_${data.date}_${data.part}`;
+        console.log('set',key, data);
+        document.getElementById(key).textContent = '.';
+        if (document.getElementById(key)) {
+          console.log('aktie---------------.')
+          document.getElementById(key).textContent = data.code ? data.code : '.';
+          document.getElementById(key).style.backgroundColor = data.color;
+        } else {
+          console.log('key not found',key)
+        }
+
+      });
+
+    })
+    
   }
 
 

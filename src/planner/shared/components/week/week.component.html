@@ -41,7 +41,7 @@ weekData : {{ weekData$ | async | json }}
    <tbody>
 
      <tr *ngFor="let user of users$ | async ;i as index">
-       <td *ngIf="weekIndex === 0 " [ngClass]="user.id == userId ? 'currentUser' : ''">{{ user.payload.doc.data().name }}</td>
+       <td *ngIf="weekIndex === 0 " [ngClass]="user.payload.doc.id == userId ? 'currentUser' : ''">{{ user.payload.doc.data().name }}</td>
        <td *ngFor="let day of weekDays;let i = index" class="day">
          <div [ngClass]="{'dayWrapper':true,'today': day.date === todayId}">
            <!-- <table class="tableDay">
@@ -56,16 +56,17 @@ weekData : {{ weekData$ | async | json }}
              </tr>
            </table> -->
 
+           <!-- class="dayPart" -->
            <div class="item">
-             <div *ngFor="let dayPart of dayParts;let i = index" class="dayPart"
-               (click)="onCellClick(user.id + '_' + day.date + '_' + dayPart )"
-               id="{{ user.id + '_' + day.date + '_' + dayPart }}" 
-               data-db="frankie"
+             <div *ngFor="let dayPart of dayParts;let i = index" 
+               (click)="onCellClick(user.payload.doc.id  + '_' + day.date + '_' + dayPart )"
+               id="{{ user.payload.doc.id + '_' + day.date + '_' + dayPart}}" 
+               data-db="mm"
                (mouseenter)="onMouseEnter($event)"
                 (mouseout)="onMouseOut($event)"
                 (mouseover)="onMouseOver($event)"
                 >
-               {{'_'}}
+               {{dayPart}}
              </div>
            </div>
 

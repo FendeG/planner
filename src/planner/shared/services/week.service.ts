@@ -25,13 +25,16 @@ export interface Planning {
   color: string;
 }
 
-export interface WeekDay {
-  userId: string;
-  day: number;
+
+export interface Day {
+  uid: string;
   year:number;
-  part: number;
+  part: string;
   code: string;
   color: string;
+  week:number;
+  date:string;
+
 }
 
 const api_users = "assets/users.json";
@@ -108,12 +111,12 @@ export class WeekService {
   }
 
 
-  save(date,uid,item) {
+  insert(day:Day) {
     // this.store.
-    console.log('save', item);
-
+    console.log('save day', day);
+    this.db.collection('planner').add(day);
     // this.db.collection(`planner/${date}/${uid}`).add(item);
-    this.db.collection(`planner`).add({...item,uid:uid,date:date,created:new Date()});
+   // this.db.collection(`planner`).add({...item,uid:uid,date:date,created:new Date()});
   }
 
 

@@ -12,3 +12,9 @@ body{
     --spacer: 1rem;
     --flow-space: 2rem;
   }
+
+  .bar{
+    display: flex;
+    justify-content:space-between;
+    background-color: whitesmoke;
+  }
