@@ -61,10 +61,11 @@ weekData : {{ weekData$ | async | json }}
              <div *ngFor="let dayPart of dayParts;let i = index" 
                (click)="onCellClick(user.payload.doc.id  + '_' + day.date + '_' + dayPart )"
                id="{{ user.payload.doc.id + '_' + day.date + '_' + dayPart}}" 
-               data-db="mm"
+               data-key=""
                (mouseenter)="onMouseEnter($event)"
                 (mouseout)="onMouseOut($event)"
                 (mouseover)="onMouseOver($event)"
+                class="dayPart" 
                 >
                {{dayPart}}
              </div>

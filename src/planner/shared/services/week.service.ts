@@ -119,6 +119,10 @@ export class WeekService {
    // this.db.collection(`planner`).add({...item,uid:uid,date:date,created:new Date()});
   }
 
+  update(key,item){
+    this.db.collection('planner').doc(key).set(item,{merge:true})
+
+  }
 
   //
   //     userId : date : dagdeel : code : color

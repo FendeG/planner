@@ -14,6 +14,7 @@ import { Store } from '../../../../store';
 import { AuthService, User } from '../../../../auth/shared/services/auth/auth.service';
 
 import { AngularFireDatabase } from '@Angular/fire/database';
+import { throwIfEmpty } from 'rxjs/operators';
 
 export interface keyValues {
   uid: string;
@@ -103,7 +104,7 @@ export class WeekComponent implements OnInit, AfterViewInit, OnDestroy {
 
   uid: string;
 
- 
+
 
   constructor(
     private _weekService: WeekService,
@@ -166,7 +167,10 @@ export class WeekComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.query = ` between ${format(this.firstDayOfWeek, 'yyyyMMdd')} and ${format(addDays(this.firstDayOfWeek, 6), 'yyyyMMdd')}`;
     console.log(this.query);
-  
+
+
+
+
     //
     // weekdays
     //
@@ -191,27 +195,7 @@ export class WeekComponent implements OnInit, AfterViewInit, OnDestroy {
 
     }
 
-    // this.month = format(addDays(this.startOfYear, this.weekNumber * 7), 'MMM');
-
-
-    this.db = [
-      { key: "1_20210310_0", code: 'a', color: 'red', userId: 1, part: 0, dateId: '20210310' },
-      { key: "1_20210310_1", code: 'V', color: 'orange', userId: 1, part: 0, dateId: '20210310' },
-      { key: "18_20210312_1", code: 'X', color: 'green', userId: 2, part: 1, dateId: '20210310' }
-    ];
-
-
-    // console.log('getWeekPlanning',this._weekService.getWeekPlanning(this.firstDayOfWeek));
-
-    // this._weekService.getWeekPlanning(this.firstDayOfWeek).subscribe(data => {
-    //   // console.log('Users : ', data);
-    // });
-
-    // this.holidays = this.holidaysService.getHolidayForWeek(this.weekNumber, this.year);
-    // console.log('holidays', this.holidays);
-
-    // this.weekData$ = this.store.select<any>('fdh');
-    // this.subscription = this._weekService.plannerData$.subscribe();
+  
 
   }
 
@@ -289,7 +273,6 @@ export class WeekComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const keyValue = this.onKeyValues(id);
     console.log('KeyValues', id, keyValue);
-    return
 
 
     // const currentColor = document.getElementById(key).style.backgroundColor  ;
@@ -306,28 +289,32 @@ export class WeekComponent implements OnInit, AfterViewInit, OnDestroy {
     //     element.getAttribute('key'); // Getter
     // element.setAttribute('key', 'value'); // Setter
 
-    
-    console.log('data-db', document.getElementById(key).getAttribute('data-db'))
-    if (document.getElementById(key).getAttribute('data-db')) {
-      console.log('Update key ',document.getElementById(key).getAttribute('data-db'));
 
-      
+    const dataKey = document.getElementById(key).getAttribute('data-key');
+    console.log('data-key', dataKey)
+
+    if (dataKey) {
+      console.log('Update key ', dataKey);
+      this._weekService.update(dataKey, {
+        code: this.code
+      })
+
     } else {
       console.log('Insert');
       // this.day = {year:this.year}
       // const newDay = new Day();
       this._weekService.insert({
-        week:this.week,
-        date:keyValue.date,
-        part:keyValue.part,
-        uid:keyValue.uid,
-        code:this.code,
-        color:this.color,
-        year:this.year
+        week: this.week,
+        date: keyValue.date,
+        part: keyValue.part,
+        uid: keyValue.uid,
+        code: this.code,
+        color: this.color,
+        year: this.year
       })
-     
-    }
 
+    }
+    return
     if (this.code) {
       // this.day.code = this.code;
 
@@ -435,7 +422,7 @@ export class WeekComponent implements OnInit, AfterViewInit, OnDestroy {
   //
   //
   onMouseEnter(div: any) {
-    console.log("mouseEnter : ", div.target.id);
+    // console.log("mouseEnter : ", div.target.id);
     var key = div.target.id
 
     // if (document.getElementById(key).textContent !== '_') {
@@ -467,19 +454,19 @@ export class WeekComponent implements OnInit, AfterViewInit, OnDestroy {
   //
   //
   //
-  onDatabase2Planner() {
-    console.log('db', this.db);
-    for (var i = 0; i < this.db.length; i++) {
-      var key = `${this.db[i].userId}_${this.db[i].dateId}_${this.db[i].part}`;
-      console.log('key', key);
-      // var key = `${this.db[i].key}`;
-      // if (document.getElementById(this.db[i].key)) {
-      if (document.getElementById(key)) {
-        document.getElementById(key).textContent = this.db[i].code ? this.db[i].code : '.';
-        document.getElementById(key).style.backgroundColor = this.db[i].color;
-      }
-    }
-  }
+  // onDatabase2Planner1() {
+  //   console.log('db', this.db);
+  //   for (var i = 0; i < this.db.length; i++) {
+  //     var key = `${this.db[i].userId}_${this.db[i].dateId}_${this.db[i].part}`;
+  //     console.log('key', key);
+  //     // var key = `${this.db[i].key}`;
+  //     // if (document.getElementById(this.db[i].key)) {
+  //     if (document.getElementById(key)) {
+  //       document.getElementById(key).textContent = this.db[i].code ? this.db[i].code : '.';
+  //       document.getElementById(key).style.backgroundColor = this.db[i].color;
+  //     }
+  //   }
+  // }
 
 
   // onHolidays2Planner() {
@@ -532,35 +519,43 @@ export class WeekComponent implements OnInit, AfterViewInit, OnDestroy {
   //
   //
   //
+
+  // changes.map(c =>
+  //   ({ key: c.payload.doc.id, ...c.payload.doc.data() })
+  // )
+
   ngAfterViewInit() {
-    this.onDatabase2Planner();
+    // this.onDatabase2Planner();
     setTimeout(() => {
 
       this.onHolidays2Planner1();
     }, 1000)
 
     console.log('week hol', this.holidaysService.hol);
+    setTimeout(() => {
+      this._weekService.getWeekPlanning(this.week).subscribe(data => {
+        // console.log('getWeekPlanning', data);
+        data.map(record => {
 
-    this._weekService.getWeekPlanning(this.week).subscribe(data => {
-      console.log('getWeekPlanning', data);
-      data.map(record => {
-        
-        const data = record.payload.doc.data();
-        const key = `${data.uid}_${data.date}_${data.part}`;
-        console.log('set',key, data);
-        document.getElementById(key).textContent = '.';
-        if (document.getElementById(key)) {
-          console.log('aktie---------------.')
-          document.getElementById(key).textContent = data.code ? data.code : '.';
-          document.getElementById(key).style.backgroundColor = data.color;
-        } else {
-          console.log('key not found',key)
-        }
+          const data = record.payload.doc.data();
+          const key = `${data.uid}_${data.date}_${data.part}`;
+          const keyDb = record.payload.doc.id;
+          // console.log('set',keyDb, data);
+          // document.getElementById(key).textContent = '.';
+          if (document.getElementById(key)) {
+            // console.log('aktie---------------.')
+            document.getElementById(key).textContent = data.code ? data.code : '.';
+            document.getElementById(key).style.backgroundColor = data.color;
+            document.getElementById(key).setAttribute('data-key', keyDb)
+          } else {
+            console.log('key not found', key)
+          }
 
-      });
+        });
 
-    })
-    
+
+      })
+    }, 1000);
   }
 
 

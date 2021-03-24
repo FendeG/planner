@@ -7,6 +7,9 @@
 
 # dependencies
 /node_modules
+/node_modules.old
+/planner/node_modules.old
+
 
 # IDEs and editors
 /.idea
