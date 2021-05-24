@@ -527,11 +527,11 @@ export class WeekComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     // this.onDatabase2Planner();
     setTimeout(() => {
-
       this.onHolidays2Planner1();
     }, 1000)
 
     console.log('week hol', this.holidaysService.hol);
+    
     setTimeout(() => {
       this._weekService.getWeekPlanning(this.week).subscribe(data => {
         // console.log('getWeekPlanning', data);
